@@ -7,5 +7,5 @@ Code exercises in python. The code samples from google are licensed under the Ap
   * string2.py
   * list1.py **completed**
   * list2.py
-  * wordcount.py 
+  * wordcount.py **completed**
 * ...
