@@ -8,4 +8,5 @@ Code exercises in python. The code samples from google are licensed under the Ap
   * list1.py **completed**
   * list2.py
   * wordcount.py **completed**
+  * mimic.py **completed**
 * ...
