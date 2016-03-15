@@ -35,13 +35,32 @@ Suggested milestones for incremental development:
 """
 
 def extract_names(filename):
-  """
-  Given a file name for baby.html, returns a list starting with the year string
-  followed by the name-rank strings in alphabetical order.
-  ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
-  """
-  # +++your code here+++
-  return
+  
+  f = open(filename, 'rU')
+  html_doc = f.read()  # read whole file, it's rather small
+  year_match = re.search(r'Popularity\sin\s(\d\d\d\d)',html_doc)
+  dict = {}
+  
+  if year_match:
+    year = year_match.group(1)
+  else:
+    year = 0000  # or throw an error an quit
+  return_list = [year]
+    
+  name_match = re.findall(r'<td>(\d+)<\/td><td>(\w+)<\/td><td>(\w+)', html_doc)
+  for name in name_match:
+    for i in range(1,3):
+      if not name[i] in dict:
+        dict[name[i]] = name[0]
+      else:
+        dict[name[i]] = min(dict[name[i]], name[0])
+  
+  
+  for key in sorted(dict.keys()):
+    return_list.append(key + ' ' + dict[key])
+  
+  return  return_list
+  
 
 
 def main():
@@ -59,10 +78,15 @@ def main():
   if args[0] == '--summaryfile':
     summary = True
     del args[0]
-
-  # +++your code here+++
-  # For each filename, get the names, then either print the text output
-  # or write it to a summary file
+  
+  for arg in args:
+    list = '\n' .join(extract_names(arg)) + '\n'
+    if summary:
+      f = open(arg+'.summary', 'w')
+      f.write(list)
+      f.close()
+    else:
+      print list
   
 if __name__ == '__main__':
   main()
