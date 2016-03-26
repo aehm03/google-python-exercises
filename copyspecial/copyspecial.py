@@ -18,7 +18,49 @@ import commands
 # +++your code here+++
 # Write functions and modify main() to call them
 
-
+def get_special_paths(dirs):
+  
+  file_names = [];
+  file_paths= []
+  
+  # use each dir in the arguments as starting point
+  for dir in dirs:
+    
+    # put initial dir on stack
+    stack = [dir]
+   
+    while stack:
+      
+      # take first from stack
+      current_dir = stack.pop(0)
+      
+      # get content 
+      dir_content = os.listdir(current_dir)
+      
+      # process directory content 
+      for content in dir_content:
+        
+        # get absolute paht
+        content_path = os.path.abspath(os.path.join(current_dir, content))
+        
+        # if it's another directory, put it on the stack
+        if os.path.isdir(content_path):
+          stack.append(content_path)
+        
+        # if it's a file, check if it matches
+        if os.path.isfile(content_path):
+          match = re.search(r'__\w+?__', content) # important: non greedy
+          if match:
+            print content
+            # check if name is already taken
+            if not content in file_names:
+              file_paths.append(content_path)
+              file_names.append(content)
+            else:
+              print "duplicate of existing filename ", content 
+      #print filenames
+       
+  return file_paths
 
 def main():
   # This basic command line argument parsing code is provided.
@@ -47,9 +89,12 @@ def main():
   if len(args) == 0:
     print "error: must specify one or more dirs"
     sys.exit(1)
-
+  
   # +++your code here+++
   # Call your functions
+  file_paths = get_special_paths(args)
+  
+  if todir:
   
 if __name__ == "__main__":
   main()
