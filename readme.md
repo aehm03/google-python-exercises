@@ -10,3 +10,4 @@ Code exercises in python. The code samples from google are licensed under the Ap
   * wordcount.py **completed**
   * mimic.py **completed**
 * Baby Names (A / B) **completed**
+* Copy Special **completed**
