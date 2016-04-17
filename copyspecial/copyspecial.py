@@ -21,7 +21,7 @@ import commands
 def get_special_paths(dirs):
   
   file_names = [];
-  file_paths= []
+  file_paths = []
   
   # use each dir in the arguments as starting point
   for dir in dirs:
@@ -62,16 +62,25 @@ def get_special_paths(dirs):
        
   return file_paths
   
-def copy_to(paths, dir):
+def copy_to(file_paths, dir):
   
   # create directory if necessary
   if not os.path.isdir(dir):
     os.mkdir(dir)
     
-  for path in paths:
+  for path in file_paths:
     print 'trying to copy', path,  'to', dir
     filename = os.path.basename(path)
     shutil.copy(path, os.path.join(dir,filename))
+
+
+def zip_to(file_paths, zippath):
+  try: 
+    cmd = 'zip -j' + ' ' + zippath + ' ' + ' '.join(file_paths)
+    print 'trying to do', cmd
+    os.system(cmd)
+  except IOError:
+    sys.stderr.write('problem reading:' + zippath)
 
 
 def main():
@@ -108,7 +117,11 @@ def main():
   
   if todir:
     copy_to(file_paths, todir)
-  else: 
+  
+  if tozip:
+    zip_to(file_paths, tozip)   
+  
+  if (not todir) and (not tozip): 
     for file_path in file_paths:
       print file_path
     
