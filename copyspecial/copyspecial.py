@@ -51,16 +51,28 @@ def get_special_paths(dirs):
         if os.path.isfile(content_path):
           match = re.search(r'__\w+?__', content) # important: non greedy
           if match:
-            print content
+            #print content
             # check if name is already taken
             if not content in file_names:
               file_paths.append(content_path)
               file_names.append(content)
             else:
-              print "duplicate of existing filename ", content 
+              print 'duplicate of existing filename ', content 
       #print filenames
        
   return file_paths
+  
+def copy_to(paths, dir):
+  
+  # create directory if necessary
+  if not os.path.isdir(dir):
+    os.mkdir(dir)
+    
+  for path in paths:
+    print 'trying to copy', path,  'to', dir
+    filename = os.path.basename(path)
+    shutil.copy(path, os.path.join(dir,filename))
+
 
 def main():
   # This basic command line argument parsing code is provided.
@@ -70,7 +82,7 @@ def main():
   # which is the script itself.
   args = sys.argv[1:]
   if not args:
-    print "usage: [--todir dir][--tozip zipfile] dir [dir ...]";
+    print 'usage: [--todir dir][--tozip zipfile] dir [dir ...]';
     sys.exit(1)
 
   # todir and tozip are either set from command line
@@ -87,7 +99,7 @@ def main():
     del args[0:2]
 
   if len(args) == 0:
-    print "error: must specify one or more dirs"
+    print 'error: must specify one or more dirs'
     sys.exit(1)
   
   # +++your code here+++
@@ -95,6 +107,11 @@ def main():
   file_paths = get_special_paths(args)
   
   if todir:
+    copy_to(file_paths, todir)
+  else: 
+    for file_path in file_paths:
+      print file_path
+    
   
-if __name__ == "__main__":
+if __name__ == '__main__':
   main()
